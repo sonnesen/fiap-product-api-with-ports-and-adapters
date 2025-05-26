@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Products API
+  version: 1.0.0
+  description: API for managing products
+  contact:
+    name: Winston Spencer Sonnesen
+    email: winston.sonnesen@fiap.com.br
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080
+    description: Local server
+  - url: https://api.fiap.com.br/products
+    description: Production server
+tags:
+  - name: Products
+    description: Operations related to products
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: List all products
+      operationId: listProducts
+      responses:
+        "200":
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProduct"
+      responses:
+        "201":
+          description: The product was created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/{productId}:
+    put:
+      tags:
+        - Products
+      summary: Update an existing product
+      operationId: updateProduct
+      parameters:
+        - name: productId
+          in: query
+          description: The product ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProduct"
+      responses:
+        "200":
+          description: The product was updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      tags:
+        - Products
+      summary: Delete a product
+      operationId: deleteProduct
+      parameters:
+        - name: productId
+          in: query
+          description: The product ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: The product was deleted
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The product ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          maxLength: 100
+          description: The product name
+          example: Samsung Galaxy S20
+        price:
+          type: number
+          format: double
+          description: The product price
+          example: 4999.99
+        description:
+          type: string
+          description: The product description
+          maxLength: 255
+          example: The best smartphone in the market
+        active:
+          type: boolean
+          description: Indicates if the product is active
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the product was created
+          example: 2021-06-01T10:00:00Z
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the product was updated
+          example: 2021-06-01T10:00:00Z
+        deletedAt:
+          type: string
+          format: date-time
+          description: The date and time the product was deleted
+          example: 2021-06-01T10:00:00Z
+    CreateProduct:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          description: The product name
+          example: Samsung Galaxy S20
+        price:
+          type: number
+          format: double
+          description: The product price
+          example: 4999.99
+        description:
+          type: string
+          description: The product description
+          maxLength: 255
+          example: The best smartphone in the market
+        active:
+          type: boolean
+          description: Indicates if the product is active
+          example: true
+    UpdateProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The product ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          maxLength: 100
+          description: The product name
+          example: Samsung Galaxy S20
+        price:
+          type: number
+          format: double
+          description: The product price
+          example: 4999.99
+        description:
+          type: string
+          description: The product description
+          maxLength: 255
+          example: The best smartphone in the market

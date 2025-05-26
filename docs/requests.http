@@ -1,0 +1,50 @@
+POST http://localhost:8080/categories HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Category 1",
+    "description": "Category 1 description",
+    "active": true
+}
+
+###
+POST http://localhost:8080/categories HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Category 2",
+    "description": "Category 2 description",
+    "active": true
+}
+
+###
+POST http://localhost:8080/categories HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Category 3",
+    "description": "Category 3 description",
+    "active": false
+}
+
+###
+GET http://localhost:8080/categories HTTP/1.1
+
+###
+GET http://localhost:8080/categories?page=3&perPage=5 HTTP/1.1
+
+###
+GET http://localhost:8080/categories/a92d1f1f-5cb2-4c8d-a344-d732d280ba66 HTTP/1.1
+
+###
+DELETE http://localhost:8080/categories/a92d1f1f-5cb2-4c8d-a344-d732d280ba66 HTTP/1.1
+
+###
+PUT http://localhost:8080/categories/d7a18c7b-7b59-4a13-a9b7-1dd3274b7ddd HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Category 2 updated",
+    "description": "Category 2 description updated",
+    "active": false
+}

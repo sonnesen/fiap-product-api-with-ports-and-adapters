@@ -1,0 +1,21 @@
+Table products {
+  id uuid [pk]
+  name varchar(100) [not null]
+  price float
+  description varchar(255) [not null]
+  active boolean [default: true]
+  category_id uuid [ref: > categories.id]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table categories {
+  id uuid [pk]
+  name varchar(100) [not null]
+  description varchar(255) [not null]
+  active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}

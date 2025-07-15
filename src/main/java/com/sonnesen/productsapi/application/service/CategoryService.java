@@ -32,7 +32,7 @@ public class CategoryService implements ForCreatingCategory, ForUpdatingCategory
 
     @Override
     public CreateCategoryOutput createCategory(final CreateCategoryInput input) {
-        final var newCategory = Category.newCategory(input.name(), input.description(), input.active());
+        final var newCategory = Category.newCategory(input.name(), input.description());
         final var category = categoryRepository.create(newCategory);
         return CreateCategoryOutput.from(category);
     }

@@ -171,7 +171,6 @@ components:
       required:
         - name
         - description
-        - active
       type: object
       properties:
         name:
@@ -184,10 +183,6 @@ components:
           description: Description of the category
           maxLength: 255
           example: Eletronics products
-        active:
-          type: boolean
-          description: Indicates if the category is active
-          example: true
     PaginatedCategories:
       type: object
       properties:

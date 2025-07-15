@@ -26,10 +26,9 @@ public class Category {
         this.deletedAt = deletedAt;
     }
 
-    public static Category newCategory(final String name, final String description, final boolean active) {
+    public static Category newCategory(final String name, final String description) {
         final var now = Instant.now();
-        final var deletedAt = active ? null : now;
-        return new Category(new CategoryId(null), name, description, active, now, now, deletedAt);
+        return new Category(new CategoryId(null), name, description, true, now, now, null);
     }
 
     public static Category with(final CategoryId id, final String name, final String description,

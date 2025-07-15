@@ -39,7 +39,6 @@ public interface CategoryMapper {
     CreateCategoryInput fromDTO(CreateCategoryDTO dto);
 
     @Mapping(target = "id", source = "categoryId")
-    @Mapping(target = "isActive", source = "dto.active")
     UpdateCategoryInput fromDTO(String categoryId, UpdateCategoryDTO dto);
 
     default OffsetDateTime mapOffsetDateTime(Instant instant) {

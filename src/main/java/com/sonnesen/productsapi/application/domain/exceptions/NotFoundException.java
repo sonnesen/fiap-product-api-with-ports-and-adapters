@@ -1,4 +1,4 @@
-package com.sonnesen.productsapi.application.exceptions;
+package com.sonnesen.productsapi.application.domain.exceptions;
 
 public class NotFoundException extends DomainException {
 

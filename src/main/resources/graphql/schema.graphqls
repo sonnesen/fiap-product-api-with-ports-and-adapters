@@ -1,9 +1,17 @@
 type Query {
     getCategory(categoryId: ID!): Category
+    listCategories(page: Int, perPage: Int): PaginatedCategories
+}
+
+type PaginatedCategories {
+  items: [Category]!
+  total: Int
+  page: Int
+  perPage: Int
 }
 
 type Category {
-  categoryId: ID!
-  name: String!
+  id: ID
+  name: String
   description: String
 }

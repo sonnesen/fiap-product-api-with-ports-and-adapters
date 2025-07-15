@@ -21,8 +21,11 @@ import com.sonnesen.productsapi.application.ports.outbound.repository.CategoryRe
 import jakarta.inject.Named;
 
 @Named
-public class CategoryService implements ForCreatingCategory, ForUpdatingCategory,
-        ForDeletingCategoryById, ForGettingCategoryById, ForListingCategories {
+public class CategoryService implements ForCreatingCategory,
+                                        ForUpdatingCategory,
+                                        ForDeletingCategoryById,
+                                        ForGettingCategoryById,
+                                        ForListingCategories {
 
     private final CategoryRepository categoryRepository;
 

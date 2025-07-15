@@ -12,16 +12,20 @@ import com.sonnesen.productsapi.application.domain.exceptions.NotFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NotFoundException.class})
-    protected ResponseEntity<Object> handleNotFound(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND,
-                request);
+    @ExceptionHandler(value = { NotFoundException.class })
+    protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
+        return handleExceptionInternal(ex,
+                                       ex.getMessage(),
+                                       new HttpHeaders(),
+                                       HttpStatus.NOT_FOUND,
+                                       request);
     }
 
-    @ExceptionHandler(value = {Exception.class})
-    protected ResponseEntity<Object> handleGeneralException(RuntimeException ex,
-            WebRequest request) {
-        return handleExceptionInternal(ex, "An unexpected error occurred", new HttpHeaders(),
-                HttpStatus.INTERNAL_SERVER_ERROR, request);
+    @ExceptionHandler(value = { Exception.class })
+    protected ResponseEntity<Object> handleGeneralException(final RuntimeException ex, final WebRequest request) {
+        return handleExceptionInternal(ex,
+                                  "An unexpected error occurred",
+                                       new HttpHeaders(),
+                                       HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

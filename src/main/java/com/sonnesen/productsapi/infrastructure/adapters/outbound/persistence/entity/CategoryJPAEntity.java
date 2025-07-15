@@ -54,9 +54,13 @@ public class CategoryJPAEntity {
     private Instant deletedAt;
 
     public static CategoryJPAEntity of(final Category category) {
-        return new CategoryJPAEntity(category.getId().value(), category.getName(), category.getDescription(),
-                category.isActive(), category.getCreatedAt(), category.getUpdatedAt(),
-                category.getDeletedAt());
+        return new CategoryJPAEntity(category.getId().value(),
+                                     category.getName(),
+                                     category.getDescription(),
+                                     category.isActive(),
+                                     category.getCreatedAt(),
+                                     category.getUpdatedAt(),
+                                     category.getDeletedAt());
     }
 
     public Category toCategory() {

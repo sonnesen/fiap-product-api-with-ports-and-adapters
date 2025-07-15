@@ -10,39 +10,41 @@ import com.sonnesen.productsapi.application.domain.pagination.Page;
 import com.sonnesen.productsapi.application.domain.pagination.Pagination;
 import com.sonnesen.productsapi.application.ports.inbound.get.ForGettingCategoryById;
 import com.sonnesen.productsapi.application.ports.inbound.list.ForListingCategories;
+import com.sonnesen.productsapi.application.ports.inbound.list.ListCategoryOutput;
 import com.sonnesen.productsapi.infrastructure.adapters.inbound.rest.mapper.CategoryMapper;
 
 @Controller
-public class CategoryResolver {
+public class CategoryResolver { // Adapter for GraphQL API
 
-    private final ForListingCategories categoryListUseCase;
-    private final ForGettingCategoryById categoryGetByIdUseCase;
+    private final ForListingCategories listingCategoriesPort;
+    private final ForGettingCategoryById gettingCategoryByIdPort;
     private final CategoryMapper categoryMapper;
 
-    public CategoryResolver(final ForListingCategories categoryListUseCase,
-            final ForGettingCategoryById categoryGetByIdUseCase,
-            final CategoryMapper categoryMapper) {
-        this.categoryListUseCase = categoryListUseCase;
-        this.categoryGetByIdUseCase = categoryGetByIdUseCase;
+    public CategoryResolver(final ForListingCategories listingCategoriesPort,
+                            final ForGettingCategoryById gettingCategoryByIdPort,
+                            final CategoryMapper categoryMapper) {
+        this.listingCategoriesPort = listingCategoriesPort;
+        this.gettingCategoryByIdPort = gettingCategoryByIdPort;
         this.categoryMapper = categoryMapper;
     }
 
     @QueryMapping
     public CategoryDTO getCategory(@Argument final UUID categoryId) {
-        return categoryMapper.toDTO(categoryGetByIdUseCase.getCategoryById(categoryId.toString()));
+        return categoryMapper.toDTO(gettingCategoryByIdPort.getCategoryById(categoryId.toString()));
     }
 
-    // @QueryMapping
-    public PaginatedCategoriesDTO listCategories(final Integer page, final Integer perPage) {
-        Pagination<CategoryDTO> categories = categoryListUseCase
-                .listCategories(new Page(page, perPage)).mapItems(categoryMapper::toDTO);
+    @QueryMapping
+    public PaginatedCategoriesDTO listCategories(@Argument final Integer page, @Argument final Integer perPage) {
+        Pagination<ListCategoryOutput> listCategories = listingCategoriesPort.listCategories(new Page(page, perPage));
+        Pagination<CategoryDTO> categories = listCategories.mapItems(categoryMapper::toDTO);
 
         PaginatedCategoriesDTO paginatedCategories = new PaginatedCategoriesDTO()
-                .items(categories.items()).page(categories.currentPage())
-                .perPage(categories.perPage()).total(categories.total());
+            .items(categories.items())
+            .page(categories.currentPage())
+            .perPage(categories.perPage())
+            .total(categories.total());
 
         return paginatedCategories;
     }
-
 
 }

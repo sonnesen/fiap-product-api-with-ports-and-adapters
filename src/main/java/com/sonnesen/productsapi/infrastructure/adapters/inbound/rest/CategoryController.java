@@ -21,45 +21,46 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class CategoryController implements CategoriesApi {
+public class CategoryController implements CategoriesApi {  // Adapter for REST API
 
-    private final ForCreatingCategory categoryCreateUseCase;
-    private final ForListingCategories categoryListUseCase;
-    private final ForGettingCategoryById categoryGetByIdUseCase;
-    private final ForDeletingCategoryById categoryDeleteUseCase;
-    private final ForUpdatingCategory categoryUpdateUseCase;
+    private final ForCreatingCategory creatingCategoryPort;
+    private final ForListingCategories listingCategoriesPort;
+    private final ForGettingCategoryById gettingCategoryByIdPort;
+    private final ForDeletingCategoryById deletingCategoryByIdPort;
+    private final ForUpdatingCategory updatingCategoryPort;
     private final CategoryMapper categoryMapper;
 
     @Override
     public ResponseEntity<CategoryDTO> createCategory(final CreateCategoryDTO body) {
         final var useCaseInput = categoryMapper.fromDTO(body);
-        final var useCaseOutput = categoryCreateUseCase.createCategory(useCaseInput);
+        final var useCaseOutput = creatingCategoryPort.createCategory(useCaseInput);
         final var uri = URI.create("/categories/" + useCaseOutput.id());
         return ResponseEntity.created(uri).body(categoryMapper.toDTO(useCaseOutput));
     }
 
     @Override
     public ResponseEntity<Void> deleteCategory(final UUID categoryId) {
-        categoryDeleteUseCase.deleteCategoryById(categoryId.toString());
+        deletingCategoryByIdPort.deleteCategoryById(categoryId.toString());
         return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<CategoryDTO> getCategory(final UUID categoryId) {
-        final var output = categoryMapper.toDTO(categoryGetByIdUseCase.getCategoryById(categoryId.toString()));
+        final var output = categoryMapper.toDTO(gettingCategoryByIdPort.getCategoryById(categoryId.toString()));
         return ResponseEntity.ok(output);
     }
 
     @Override
     public ResponseEntity<CategoryDTO> updateCategory(final UUID categoryId, final UpdateCategoryDTO body) {
         final var input = categoryMapper.fromDTO(categoryId.toString(), body);
-        final var output = categoryUpdateUseCase.updateCategory(input);
+        final var output = updatingCategoryPort.updateCategory(input);
         return ResponseEntity.ok(categoryMapper.toDTO(output));
     }
 
     @Override
     public ResponseEntity<PaginatedCategoriesDTO> listCategories(final Integer page, final Integer perPage) {
-        Pagination<CategoryDTO> categories = categoryListUseCase.listCategories(new Page(page, perPage)).mapItems(categoryMapper::toDTO);
+        Pagination<CategoryDTO> categories = listingCategoriesPort.listCategories(new Page(page, perPage))
+                                                                  .mapItems(categoryMapper::toDTO);
 
         PaginatedCategoriesDTO paginatedCategories = new PaginatedCategoriesDTO()
             .items(categories.items())
